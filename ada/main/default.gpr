@@ -1,0 +1,62 @@
+with "../console/console.gpr";
+
+project Default is
+
+   type Zmq_Kind_Type is
+      ("static", "relocatable");
+   for Source_Dirs use ("body");
+   for Object_Dir use "obj";
+   for Main use ("main.adb");
+   LIBRARY_TYPE : Zmq_Kind_Type := external ("LIBRARY_TYPE");
+
+   package Linker is
+
+      case LIBRARY_TYPE is
+
+         when "static" =>
+            for Default_Switches ("ada") use ("-lzmq", "-g");
+            for Switches ("c") use ("-g");
+            for Switches ("c++") use ("-g");
+
+         when "relocatable" =>
+            for Default_Switches ("ada") use ("-lzmq");
+      end case;
+   end Linker;
+
+   package Compiler is
+
+      case LIBRARY_TYPE is
+
+         when "static" =>
+            for Switches ("ada") use ("-g", "-fstack-check", "-gnato", "-gnata", "-gnat12");
+            for Switches ("c") use ("-g");
+            for Switches ("c++") use ("-g");
+
+         when "relocatable" =>
+
+      end case;
+   end Compiler;
+
+   case LIBRARY_TYPE is
+
+      when "static" =>
+         for Languages use ("Ada");
+
+      when "relocatable" =>
+
+   end case;
+
+   package Builder is
+
+      case LIBRARY_TYPE is
+
+         when "static" =>
+            for Switches ("ada") use ("-g");
+
+         when "relocatable" =>
+
+      end case;
+   end Builder;
+
+end Default;
+

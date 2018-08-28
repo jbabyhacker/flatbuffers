@@ -1,0 +1,10 @@
+with "/mnt/data/work/proj/tools/zeromq-ada/install/lib/gnat/zmq.gpr";
+
+library project Console is
+    for Languages use ("Ada");
+    for Library_Name use "console";
+    for Source_Dirs use ("spec", "body");
+    for Object_Dir use "obj";
+    for Library_Dir use "lib";
+    for Library_Kind use "Static";
+end Console;
